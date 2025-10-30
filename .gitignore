@@ -3,6 +3,9 @@ venv/
 env/
 .env/
 
+migrations/
+migrations
+
 .env
 .env.*
 
