@@ -11,6 +11,7 @@ class Notas(models.Model):
 
     dono = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=200, null=False, blank=False)
+    descricao = models.TextField( null=True, blank=True, help_text="descrição da anotação")
     data_criacao = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=StatusNotas.choices, default=StatusNotas.PENDENTE)
 
