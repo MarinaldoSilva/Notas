@@ -214,7 +214,7 @@ POST http://127.0.0.1:8000/api/v1/notas/listar/
 }
 ```
 
-#### 4. Atualizar uma Nota Específica (Completo)
+#### 4. Atualizar uma Nota Específica
 
 * **URL:** `/api/v1/notas/editar/<int:id>/`
 * **Método:** `PUT`
