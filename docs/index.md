@@ -17,7 +17,65 @@ class UserCreateAPIView(APIView):
 
 ```
 
-Esse é a única rota de user implementada, os demais acessos seram somente via admin, e nessa rota a permissão ´´e livre.
+Esse é a única rota de user implementada, os demais acessos seram somente via admin, e nessa rota a permissão é livre.
+
+### Token JWT
+A utilização do token jwt se dar por motivos de seurança e geração do tokens com prazos de validade curtos, assim é possível trabalhar melhor com logins e logouts.
+Temos tem rotas:
+
+Obter Token access e refresh
+
+```http
+http://127.0.0.1:8000/api/token/
+```
+```json
+	{
+	"username":"user",
+	"password":"senha"
+}
+```
+E gera uma resposta:
+
+```json
+{
+	"refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+	"access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+Atualização de token(refresh):
+
+```http
+http://127.0.0.1:8000/api/token/refresh
+```
+Passe seu token access gerado
+```json
+"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+e receba um novo token nesse mesmo modelo de resposta
+
+Desabilitar um token e evitar que seja reutilizado novamente
+
+```http
+http://127.0.0.1:8000/api/token/blacklist/
+```
+passe seu token
+
+```json
+{
+	"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+e a resposta é
+
+```json
+{
+	"detail": "Token has wrong type",
+	"code": "token_not_valid"
+}
+```
 
 ### Notas
 As notas (anotações) dos usuários foram projetadas para serem seguras e com base nisso necessitam de autenticação, é necessário um user com token para acessar as views. No serializer tem três campos de validações, onde tem as validações por `campo` e `validated_data`, eles são:
