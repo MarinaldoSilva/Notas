@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import UserCreateAPIView
+from .views import UserListAPIView, UserUpdateAPIView
 
 urlpatterns = [
-    path("cadastro/", UserCreateAPIView.as_view(), name='user_create')
+    path("listar/", UserListAPIView.as_view(), name='user_list'),
+    path("editar/", UserUpdateAPIView.as_view(), name='editar_user')
 ]
