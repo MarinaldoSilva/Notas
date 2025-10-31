@@ -117,7 +117,8 @@ POST http://127.0.0.1:8000/api/v1/user/cadastro/
 	"user_id": 1,
 	"username": "user",
 	"email": "user@hotmail.com",
-	"token": "5826ac3ff422080e5ce353cddf5bc8a7f39efbd5"
+	"refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+	"access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
@@ -252,10 +253,9 @@ PUT http://127.0.0.1:8000/api/v1/notas/editar/2/
 
 * **URL:** `/notas/<int:pk>/`
 * **Método:** `DELETE`
-* **Autenticação:** Token (`IsAuthenticated`, `IsOwner`).
+* **Autenticação:** Token.
 * **Descrição:** Remove uma nota existente do usuário autenticado.
 
-**Exemplo de Request:**
 
 ```http
 DELETE http://127.0.0.1:8000/api/v1/notas/deletar/3/
@@ -263,3 +263,33 @@ DELETE http://127.0.0.1:8000/api/v1/notas/deletar/3/
 
 (Sem corpo de resposta)
 
+### 6. Gerar novo token (refresh)
+
+* **URL:** /api/token/refresh
+* **Método:** `POST`
+* **Autenticação:** Token.
+* **Descrição:** Gera um novo token de acesso
+```json
+{
+	"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+}
+```
+
+### 7. Logout do token blacklist
+
+* **URL:** /api/token/blacklist
+* **Método:** `POST`
+* **Autenticação:** Token.
+* **Descrição:** Invalida o token e não permite o acesso
+```json
+{
+	"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+}
+```
+
+```json
+{
+	"detail": "Token has wrong type",
+	"code": "token_not_valid"
+}
+```
