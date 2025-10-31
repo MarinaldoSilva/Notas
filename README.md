@@ -271,7 +271,7 @@ DELETE http://127.0.0.1:8000/api/v1/notas/deletar/3/
 * **Descrição:** Gera um novo token de acesso
 ```json
 {
-	"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+	"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
@@ -283,7 +283,7 @@ DELETE http://127.0.0.1:8000/api/v1/notas/deletar/3/
 * **Descrição:** Invalida o token e não permite o acesso
 ```json
 {
-	"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+	"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
 
