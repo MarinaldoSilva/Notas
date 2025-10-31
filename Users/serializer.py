@@ -11,7 +11,9 @@ class UserSerializer(serializers.ModelSerializer):
 
         extra_kwargs = {
             'password':{
-                'write_only': True
+                'write_only': True,
+                'min_length':8,
+                'help_text':'A senha deve ter pelo menos 8 digitos'
             }
         }
 
