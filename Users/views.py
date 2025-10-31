@@ -6,7 +6,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 
 class UserCreateAPIView(APIView):
-
+    
     permission_classes = [AllowAny]
 
     def post(self, request) -> Response:

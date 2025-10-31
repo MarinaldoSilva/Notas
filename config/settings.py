@@ -51,16 +51,28 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication'
+        'rest_framework.authentication.TokenAuthentication', # 
     ],
-    
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ], 
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
 
-    #'DEFAULT_SCHEMA_CLASS': [
-    #    'drf_spectacular.openapi.AutoSchema',
-    #]
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Projeto Notas API', 
+    'DESCRIPTION': 'API Anotações - Documentação.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SECURITY': [
+        {
+            'Token Authentication': {
+                'type': 'apiKey',
+                'in': 'header',
+                'name': 'Authorization'
+            }
+        }
+    ],
 }
 
 WSGI_APPLICATION = 'config.wsgi.application'

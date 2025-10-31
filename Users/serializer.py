@@ -17,10 +17,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data)->User:
         new_user = User.objects.create_user(**validated_data)
-        # avatar = validated_data.get('avatar')
-        # if avatar:
-        #     new_user.avatar = avatar
-        #     new_user.save()
         return new_user
 
     def update(self, instance, validated_data):
