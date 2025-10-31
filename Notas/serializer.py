@@ -9,6 +9,18 @@ class NotasSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['id','dono']
 
+        extra_kwargs = {
+            'titulo':{
+                'help_text':'O titulo da nota deve ter pelo menos 3 palavras para ser aceito'
+            },
+            'descricao':{
+                'help_text':'A descrição não pode ter o mesmo conteúdo do título.'
+            },
+            'ststus':{
+                'help_text':'1-concluido / 2-Fazendo / 3-pendente'
+            }
+        }
+
     def validate_titulo(self, value):
         min_palavras = 3
         if len(value.split()) < min_palavras:
