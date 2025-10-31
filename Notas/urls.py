@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import (NotasListAPIView, NotasDetailAPIView, 
-                    NotasCreateAPIView, NotasUpdateAPIView, NotasDestroyAPIView)
+from .views import (NotasListAPIView, NotasDetailAPIView, NotasCreateAPIView, NotasUpdateAPIView, NotasDestroyAPIView)
 
 urlpatterns = [
     path('criar/', NotasCreateAPIView.as_view(), name='criar_nota'),

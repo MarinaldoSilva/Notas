@@ -1,5 +1,4 @@
 from pathlib import Path
-from django.conf import settings
 from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,9 +10,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    'Users',
-    'Notas',
-    'Auth',
+    'users',
+    'notas',
+    'authentication',
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     'drf_spectacular',
@@ -128,5 +127,5 @@ APPEND_SLASH = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'Users.User'
+AUTH_USER_MODEL = 'users.User'
 

@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
-from Users.models import User
-from Users.serializer import UserSerializer
+from users.models import User
+from users.serializer import UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
