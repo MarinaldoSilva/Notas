@@ -10,6 +10,7 @@ env/
  migrations/
  migrations
 db.sqlite3
+1db.sqlite3
 
 .vscode/*
 !.vscode/settings.json
