@@ -86,10 +86,9 @@ class NotasCreateAPIView(APIView):
             serializer = NotasSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             notas_instance = serializer.save(dono=request.user)
-            user_email = request.user.email
+            email_destino = request.user.email
             titulo_nota = notas_instance.titulo
-            form_email(user_email, titulo_nota)
-            print(f"E-mail de criação de nota enviado para {user_email} com título '{titulo_nota}'.")
+            form_email(email_destino, titulo_nota)
         except Notas.DoesNotExist:
             return Response({"error":serializer.errors}, status=status.HTTP_404)
         return Response({"result":serializer.data}, status=status.HTTP_201_CREATED)
