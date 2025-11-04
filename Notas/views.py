@@ -120,6 +120,17 @@ class NotasUpdateAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(dono=request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def patch(self, request, pk):
+        try:
+            queryset = Notas.objects.get(pk=pk, dono=request.user)
+        except Notas.DoesNotExist:
+            return Response({"error":"Anotação não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = NotasSerializer(instance=queryset, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 
 class NotasDestroyAPIView(APIView):
     """
