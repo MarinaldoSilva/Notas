@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import Notas
+from .utils import form_email
 from .serializer import NotasSerializer
 from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiParameter
 
@@ -84,7 +85,11 @@ class NotasCreateAPIView(APIView):
         try:
             serializer = NotasSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            serializer.save(dono=request.user)
+            notas_instance = serializer.save(dono=request.user)
+            user_email = request.user.email
+            titulo_nota = notas_instance.titulo
+            form_email(user_email, titulo_nota)
+            print(f"E-mail de criação de nota enviado para {user_email} com título '{titulo_nota}'.")
         except Notas.DoesNotExist:
             return Response({"error":serializer.errors}, status=status.HTTP_404)
         return Response({"result":serializer.data}, status=status.HTTP_201_CREATED)
