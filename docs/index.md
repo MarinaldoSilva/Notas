@@ -1,8 +1,82 @@
-## Motivação de criação do projeto
+# Documentação do Projeto Notas
 
-Projeto tem como principal objetivo por em pratica os conceitos aprendidos durante os cursos realizados e pesquisas online nas docs e web.
+## Visão Geral do Projeto
 
-## Motivos da escolha das funcionalidade
+O projeto Notas é uma API REST desenvolvida em Django que permite aos usuários criar e gerenciar anotações pessoais de forma segura. O sistema implementa autenticação JWT e oferece funcionalidades robustas de gerenciamento de notas.
+
+## Sistema de Notificações por E-mail
+
+O sistema inclui um serviço de notificações por e-mail implementado no módulo `utils.py`. Este serviço é responsável por enviar emails automáticos quando novas notas são criadas.
+
+### Implementação do Serviço de E-mail (`utils.py`)
+
+```python
+def form_email(user_email: str, titulo_nota: str):
+    """
+    Envia um e-mail de confirmação quando uma nova nota é cadastrada no sistema.
+    
+    Parâmetros:
+    - user_email: E-mail do destinatário
+    - titulo_nota: Título da nota criada
+    """
+```
+
+### Características do Sistema de E-mail
+
+1. **Template Personalizado**
+   - Utiliza template HTML localizado em `templates/email/form_email.html`
+   - Suporta formatação rica e personalização do conteúdo
+   - Dados dinâmicos incluem e-mail do usuário e título da nota
+
+2. **Configuração**
+   - Utiliza configurações do Django settings
+   - Remetente configurável via `settings.DEFAULT_FROM_EMAIL`
+   - Suporte a múltiplos destinatários
+
+3. **Tratamento de Erros**
+   - Sistema robusto de tratamento de exceções
+   - Logs detalhados de sucesso e falha
+   - Mensagens informativas no console
+
+4. **Funcionalidades**
+   - Assunto personalizado com o título da nota
+   - Mensagem em formato HTML
+   - Confirmação de envio no console
+   - Tratamento de falhas silenciosas desativado para melhor debugging
+
+### Exemplo de Uso do Sistema de E-mail
+
+```python
+# Exemplo de chamada da função
+form_email("usuario@exemplo.com", "Minha Nova Nota")
+
+# Saída de sucesso no console
+"Enviado com sucesso!"
+"E-mail de criação de nota enviado para usuario@exemplo.com com título 'Minha Nova Nota'."
+```
+
+### Integração com o Django
+
+- Utiliza o sistema de templates do Django
+- Aproveita as configurações de e-mail do projeto
+- Integrado com o modelo de notas
+- Chamado automaticamente após a criação de uma nova nota
+
+## Tecnologias Utilizadas
+
+- Django 5.2.7
+- Django REST Framework 3.16.1
+- JWT Authentication (djangorestframework_simplejwt 5.5.1)
+- Swagger/OpenAPI (drf-spectacular 0.28.0)
+- PostgreSQL (psycopg2 2.9.11)
+- Python-dotenv 1.2.1
+- CORS Headers 4.9.0
+
+## Motivação do Projeto
+
+O projeto tem como principal objetivo colocar em prática os conceitos aprendidos durante os cursos realizados e pesquisas online nas documentações e web, implementando boas práticas de desenvolvimento e padrões de segurança.
+
+## Funcionalidades e Implementações
 
 ### Users
 As funcionalidades de user foram feitas para que o processo de criação do user fosse feito de forma simples e simplificada. No user temos somente uma rota de acesso livre a todos os usuários (AnonymousUser) 
