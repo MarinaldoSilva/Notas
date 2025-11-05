@@ -16,18 +16,12 @@ class UserListAPIView(APIView):
 class UserUpdateAPIView(APIView):
 
     permission_classes = [IsAuthenticated]
-
-    def put(self, request):
-        serializer = UserSerializer(request.user, request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def patch(self, request, pk):
         try:
             queryset = User.objects.get(pk=pk)
-            if request.user.id != queryset.id:
-                return Response({"errors":"você não term permissão para alterar esse usuário"})
+            if request.user.id != queryset.id and not request.user.is_staff and not request.user.is_superuser:
+                return Response({"error":"você não term permissão para alterar esse usuário"},status=status.HTTP_403_FORBIDDEN)
         except User.DoesNotExist:
             return Response({"error":"Usuário não localizado"}, status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(instance=queryset, data=request.data, partial=True)

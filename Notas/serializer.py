@@ -16,7 +16,7 @@ class NotasSerializer(serializers.ModelSerializer):
             'descricao':{
                 'help_text':'A descrição não pode ter o mesmo conteúdo do título.'
             },
-            'ststus':{
+            'status':{
                 'help_text':'1-concluido / 2-Fazendo / 3-pendente'
             }
         }
@@ -27,6 +27,8 @@ class NotasSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(f"O titulo deve ter pelo menos {min_palavras} palavras")
         return value.title()
     
+        
+    
     def validate(self, data):
         titulo = data['titulo']
         descricao = data['descricao']
@@ -35,10 +37,11 @@ class NotasSerializer(serializers.ModelSerializer):
             if titulo.strip().lower() == descricao.strip().lower():
                 raise serializers.ValidationError("O titulo não pode ser igual a descrição da atividade.")
             return data
+        return data
         
     def update(self, instance, validated_data):
         if 'titulo' in validated_data and instance.titulo != validated_data['titulo']:
             data_update_title = datetime.now().strftime("%d/%m/%y")
             validated_data['titulo'] = f"{validated_data['titulo']} - Atualizado em {data_update_title}"
-            return super().update(instance, validated_data)
-        return instance
+        return super().update(instance, validated_data)
+        

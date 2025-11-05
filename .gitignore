@@ -1,32 +1,13 @@
 __pycache__/
-*.py[cod]
-*$py.class
-.pytest_cache/
-.coverage
+
 venv/
 env/
-.env
-*.so
+
 
 db.sqlite3
-1db.sqlite3
 
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-.DS_Store
-Thumbs.db
-*.log
-*.bak
-*.tmp
-*.swp
-*~
-
-.idea/
-*.sublime-*
+!.vscode/
 
 .env
 .env.local

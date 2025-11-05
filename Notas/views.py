@@ -64,7 +64,7 @@ class NotasDetailAPIView(APIView):
             queryset = Notas.objects.get(pk=pk, dono=request.user)
             serializer = NotasSerializer(queryset)
         except Notas.DoesNotExist:
-            return Response({"error":serializer.errors}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error":"Anotação não localizada"}, status=status.HTTP_404_NOT_FOUND)
         return Response({"result": serializer.data}, status=status.HTTP_200_OK)
     
 class NotasCreateAPIView(APIView):
@@ -82,15 +82,15 @@ class NotasCreateAPIView(APIView):
     )
     
     def post(self, request):
+        serializer = NotasSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         try:
-            serializer = NotasSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
             notas_instance = serializer.save(dono=request.user)
             email_destino = request.user.email
             titulo_nota = notas_instance.titulo
             form_email(email_destino, titulo_nota)
-        except Notas.DoesNotExist:
-            return Response({"error":serializer.errors}, status=status.HTTP_404)
+        except Exception as e:
+            return Response({"error": f"Erro ao criar nota ou agendar e-mail: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"result":serializer.data}, status=status.HTTP_201_CREATED)
 
 class NotasUpdateAPIView(APIView):
@@ -111,15 +111,6 @@ class NotasUpdateAPIView(APIView):
                              description='ID da nota a ser atualizada.'),
         ],
     )
-    def put(self, request, pk):
-        try:
-            queryset = Notas.objects.get(pk=pk, dono=request.user)
-        except Notas.DoesNotExist:
-            return Response({"error":"Anotação não localizada"})
-        serializer = NotasSerializer(instance=queryset, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(dono=request.user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def patch(self, request, pk):
         try:
@@ -153,6 +144,6 @@ class NotasDestroyAPIView(APIView):
             queryset = Notas.objects.get(pk=pk, dono=request.user)
             queryset.delete()
         except Notas.DoesNotExist:
-            return Response({"error":"Anotação não localizada"})
+            return Response({"error":"Anotação não localizada"}, status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_204_NO_CONTENT)
  
