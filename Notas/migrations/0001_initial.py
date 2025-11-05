@@ -7,18 +7,36 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Notas',
+            name="Notas",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('titulo', models.CharField(max_length=200)),
-                ('descricao', models.TextField(blank=True, help_text='descrição da anotação', null=True)),
-                ('data_criacao', models.DateTimeField(auto_now_add=True)),
-                ('status', models.IntegerField(choices=[(1, 'Concluido'), (2, 'Fazendo'), (3, 'Pendente')], default=3)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("titulo", models.CharField(max_length=200)),
+                (
+                    "descricao",
+                    models.TextField(
+                        blank=True, help_text="descrição da anotação", null=True
+                    ),
+                ),
+                ("data_criacao", models.DateTimeField(auto_now_add=True)),
+                (
+                    "status",
+                    models.IntegerField(
+                        choices=[(1, "Concluido"), (2, "Fazendo"), (3, "Pendente")],
+                        default=3,
+                    ),
+                ),
             ],
         ),
     ]

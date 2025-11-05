@@ -1,0 +1,25 @@
+[tool.black]
+line-length = 88 
+target-version = ['py39']
+include = '\.pyi?$'
+exclude = '''
+   /(
+       \.git
+     | \.hg
+     | \.mypy_cache
+     | \.tox
+     | \.venv
+     | venv
+     | _build
+     | buck-out
+     | build
+     | dist
+     | migrations
+   )/
+   '''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["config", "users", "notas", "authentication"]
+skip_glob = ["**/migrations/*.py"]
