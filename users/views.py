@@ -35,9 +35,7 @@ class UserUpdateAPIView(APIView):
                     status=status.HTTP_403_FORBIDDEN,
                 )
         except User.DoesNotExist:
-            return Response(
-                {KEY_ERROR: USER_LOCALIZATION}, status=status.HTTP_404_NOT_FOUND
-            )
+            return Response({KEY_ERROR: USER_LOCALIZATION}, status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(instance=queryset, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()

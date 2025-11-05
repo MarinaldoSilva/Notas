@@ -46,7 +46,5 @@ class NotasSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         if "titulo" in validated_data and instance.titulo != validated_data["titulo"]:
             data_update_title = datetime.now().strftime("%d/%m/%y")
-            validated_data["titulo"] = (
-                f"{validated_data['titulo']} - Atualizado em {data_update_title}"
-            )
+            validated_data["titulo"] = f"{validated_data['titulo']} - Atualizado em {data_update_title}"
         return super().update(instance, validated_data)

@@ -45,9 +45,7 @@ class SigninView(APIView):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            return Response(
-                {"detail": "Email não localizado."}, status=status.HTTP_401_UNAUTHORIZED
-            )
+            return Response({"detail": "Email não localizado."}, status=status.HTTP_401_UNAUTHORIZED)
 
         if user.check_password(password):
             refresh_token = TokenObtainPairSerializer.get_token(user)
@@ -80,8 +78,6 @@ class SignoutView(APIView):
             user.save()
             token.blacklist()
         except TokenError:
-            raise AuthenticationFailed(
-                "Erro ao invalidar o token.", code=status.HTTP_400_BAD_REQUEST
-            )
+            raise AuthenticationFailed("Erro ao invalidar o token.", code=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_205_RESET_CONTENT)
