@@ -12,11 +12,11 @@ decorator do pytest-django que vai indicar que temos que acessar o banco de dado
 @pytest.mark.django_db
 def test_create_user():
     user = User.objects.create_user(
-        username="test_user", password="admin@2025", email="test@exemple.com"
+        username="isadorapinto", password="isadora25", email="test@exemple.com"
     )
 
-    assert user.username == "test_user"
-    assert user.check_password("admin@2025")
+    assert user.username == "isadorapinto"
+    assert user.check_password("isadora25")
     assert user.email == "test@exemple.com"
     assert user.is_active is True
     assert not user.is_superuser
