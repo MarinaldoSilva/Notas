@@ -20,9 +20,8 @@ class NotasSerializer(serializers.ModelSerializer):
         }
 
     def validate_titulo(self, value):
-        min_palavras = 3
-        if len(value.split()) < min_palavras:
-            raise serializers.ValidationError(f"O titulo deve ter pelo menos {min_palavras} palavras")
+        if len(value.split()) < 3:
+            raise serializers.ValidationError("O titulo deve ter pelo menos 3 palavras")
         return value.title()
 
     def validate(self, data):
@@ -32,7 +31,7 @@ class NotasSerializer(serializers.ModelSerializer):
         if titulo and descricao:
             if titulo.strip().lower() == descricao.strip().lower():
                 raise serializers.ValidationError(
-                    "O titulo não pode ser igual a descrição da atividade."
+                    "O titulo não pode ser igual a descrição da nota."
                 )
             return data
         return data
