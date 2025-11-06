@@ -125,9 +125,7 @@ class NotasCreateAPIView(APIView):
                 {KEY_ERROR: f"{ERROR_CREATE_OR_EMAIL}: {str(e)}"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response(
-            {RESULT_RESPONSE: serializer.data}, status=status.HTTP_201_CREATED
-        )
+        return Response({RESULT_RESPONSE: serializer.data}, status=status.HTTP_201_CREATED)
 
 
 class NotasUpdateAPIView(APIView):
@@ -146,9 +144,7 @@ class NotasUpdateAPIView(APIView):
             404: {"error": "notação não localizada para esse usuário."},
         },
         parameters=[
-            OpenApiParameter(
-                name="pk", type=int, description="ID da nota a ser atualizada."
-            ),
+            OpenApiParameter(name="pk", type=int, description="ID da nota a ser atualizada."),
         ],
     )
     def patch(self, request, pk):

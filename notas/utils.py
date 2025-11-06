@@ -32,8 +32,6 @@ def form_email(email_destinatario: str, titulo_nota: str) -> render_to_string:
             html_message=html_message,
         )
         print("Enviado com sucesso!")
-        print(
-            f"E-mail de criação de nota enviado para {email_destinatario} com título '{titulo_nota}'."
-        )
+        print(f"E-mail de criação de nota enviado para {email_destinatario} com título '{titulo_nota}'.")
     except Exception as e:
         print(f"{KEY_ERROR}: Ao enviar e-mail para {email_destinatario}: {e}")
