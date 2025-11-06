@@ -18,8 +18,14 @@ exclude = '''
    )/
    '''
 
-[tool.isort]
+  [tool.isort]
 profile = "black"
 line_length = 105
 known_first_party = ["config", "users", "notas", "authentication"]
 skip_glob = ["**/migrations/*.py"]
+
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = "test_*.py"
+addopts = "--no-header --strict-markers --cov=. --cov-report=term-missing --reuse-db"
