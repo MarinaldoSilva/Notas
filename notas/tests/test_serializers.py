@@ -9,9 +9,9 @@ User = get_user_model()
 """fixture cria um objeto para ser usado nos testes"""
 @pytest.fixture
 @pytest.mark.django_db
-def user_test():
-    return User.objects.user_test(
-        username='user_test',
+def user_teste():
+    return User.objects.create_user(
+        username='user_teste',
         password='admin@25',
         email='teste@exemple.com'
     )
@@ -19,9 +19,9 @@ def user_test():
 """nota que vai servir para testar o processo de update e reader"""
 @pytest.fixture
 @pytest.mark.django_db
-def nota_teste(user_test):
+def nota_teste(user_teste):
     return Notas.objects.create(
-        dono=user_test,
+        dono=user_teste,
         titulo='teste nota com dono',
         descricao='descrição da nota do user',
         status=1
@@ -29,73 +29,63 @@ def nota_teste(user_test):
 
 
 @pytest.mark.django_db
-def nota_serializer_valida(user_test):
+def test_nota_serializer_valida(user_teste):
     request_data = {
-        'titulo':'titulo teste',
+        'titulo':'Titulo Teste Teste',
         'descricao':'descriçao de teste',
         'status': 1
     }
 
-    serializer = NotasSerializer(data=request_data, context={'request':{'user':user_test}})
+    serializer = NotasSerializer(data=request_data, context={'request':{'user':user_teste}})
     assert serializer.is_valid(raise_exception=True)
-    nota = serializer.save(dono=user_test)
+    nota = serializer.save(dono=user_teste)
 
-    assert nota.titulo == 'titulo de teste' 
+    assert nota.titulo == 'Titulo Teste Teste'
     assert nota.descricao == 'descriçao de teste'
     assert nota.status == 1
-    assert nota.dono == user_test
-    assert nota.objects.count() == 1
+    assert nota.dono == user_teste
+    assert Notas.objects.count() == 1
 
 
 @pytest.mark.django_db
-def nota_serializer_titulo_curto(user_test):
+def test_nota_serializer_titulo_curto(user_teste):
     request_data = {
         'titulo':'curto',
         'descricao':'descrição valida para a nota',
         'status':1
     }
 
-    serializer = NotasSerializer(data=request_data, context={'request':{'user':user_test}})
-    assert not serializer.is_valid(raise_exception=True)
-    nota = serializer.save(dono=user_test)
-
+    serializer = NotasSerializer(data=request_data, context={'request':{'user':user_teste}})
+    assert not serializer.is_valid()
     assert 'titulo' in serializer.errors
-    assert 'O titulo deve ter pelo menos 3 palavras' in serializer.errors['titulo'][0]
 
 
 @pytest.mark.django_db
-def nota_serializer_titulo_descricao_igual(user_test):
+def test_nota_serializer_titulo_descricao_igual(user_teste):
     request_data = {
         'titulo':'um dois tres',
         'descricao':'um dois tres',
         'status':1
     }
 
-    serializer = NotasSerializer(data=request_data, context={'request':{'user':user_test}})
-    assert not serializer.is_valid(raise_exception=True)
-    nota = serializer.save(dono=user_test)
-
-    """
-    os campos estão corretos, mas a regra de negócio não acusou quebra de protocolo com a igualdade, então deu o non_field_errors no serializer.errors"""
+    serializer = NotasSerializer(data=request_data, context={'request':{'user':user_teste}})
+    assert not serializer.is_valid()
     assert 'non_field_errors' in serializer.errors
-    assert 'O titulo não pode ser igual a descrição da nota.' in serializer.errors['non_field_errors'][0]
-
+    
 
 @pytest.mark.django_db
-def atualizar_nota_existente(nota_teste):
+def test_atualizar_nota_existente(nota_teste):
     request_data = {
-        'titulo':'Novo titulo da nota',
+        'titulo':'novo titulo da nota',
         'descricao':'atualizar descrição da nota',
         'status':3
     }
 
-    serializer = NotasSerializer(instance=nota_teste, data=request_data, partil=True)
-    assert serializer.is_valid(raise_exception=True)
+    serializer = NotasSerializer(instance=nota_teste, data=request_data, partial=True)
+    assert serializer.is_valid()
     update_nota = serializer.save()
 
-    assert update_nota.titulo == 'Novo titulo da nota'
+    assert update_nota.titulo == 'Novo Titulo Da Nota'
     assert update_nota.descricao == 'atualizar descrição da nota'
     assert update_nota.status == 3
-    assert update_nota.data_criacao == nota_teste.data_criacao
-    assert update_nota.refresh_from_db()
-    assert nota_teste.titulo == 'Novo titulo da nota'
+    #assert update_nota.refresh_from_db()

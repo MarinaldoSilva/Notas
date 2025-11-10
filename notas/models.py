@@ -13,6 +13,7 @@ class Notas(models.Model):
     titulo = models.CharField(max_length=200, null=False, blank=False)
     descricao = models.TextField(null=True, blank=True, help_text="descrição da anotação")
     data_criacao = models.DateTimeField(auto_now_add=True)
+    data_atualizacao = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=StatusNotas.choices, default=StatusNotas.PENDENTE)
 
     def __str__(self):

@@ -25,8 +25,8 @@ class NotasSerializer(serializers.ModelSerializer):
         return value.title()
 
     def validate(self, data):
-        titulo = data["titulo"]
-        descricao = data["descricao"]
+        titulo = data.get("titulo")
+        descricao = data.get("descricao")
 
         if titulo and descricao:
             if titulo.strip().lower() == descricao.strip().lower():
@@ -35,9 +35,3 @@ class NotasSerializer(serializers.ModelSerializer):
                 )
             return data
         return data
-
-    def update(self, instance, validated_data):
-        if "titulo" in validated_data and instance.titulo != validated_data["titulo"]:
-            data_update_title = datetime.now().strftime("%d/%m/%y")
-            validated_data["titulo"] = f"{validated_data['titulo']} - Atualizado em {data_update_title}"
-        return super().update(instance, validated_data)
