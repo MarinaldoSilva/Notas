@@ -28,4 +28,4 @@ skip_glob = ["**/migrations/*.py"]
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
 python_files = "test_*.py"
-addopts = "--no-header --strict-markers --cov=. --cov-report=term-missing --reuse-db"
+addopts = "--no-header --strict-markers --reuse-db"
