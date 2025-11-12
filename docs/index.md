@@ -8,7 +8,7 @@
 
 - Overview por que do projeto.
 - Tecnologias e libs utilizadas
-- Estrutura do projeto 
+- Estrutura do projeto
 - Endpoints
 - Serialização
 - Notificações por e-mail
@@ -20,21 +20,23 @@
 Algumas das libs utilizdas:
 
 Python
-Django 5.2 
+Django 5.2
 Django REST Framework
 djangorestframework-simplejwt (JWT)
 drf-spectacular
 dotenv
-psycopg2 
+psycopg2
 
 As demais libs estão no arquivo `requirements.txt`.
 
 ## Estrutura do projeto
 
 `users` — model de custom user.
- endpoints para cadastro/atualização.
-* `authentication` — Contém as responsabilidades signup, signin, signout com tokens de acesso.
-- `notas` — model `Notas` que contém os dono, titulo, descricao entre outros, também tem os serializers, views e utils onde temas requisições de E-mail.
+endpoints para cadastro/atualização.
+
+- `authentication` — Contém as responsabilidades signup, signin, signout com tokens de acesso.
+
+* `notas` — model `Notas` que contém os dono, titulo, descricao entre outros, também tem os serializers, views e utils onde temas requisições de E-mail.
 
 ## Endpoints principais
 
@@ -63,12 +65,12 @@ Obs.: todas as rotas de `notas` exigem autenticação JWT (exceto as públicas e
 
 Em nosso `notas/utils.py`
 
-Temos o `form_email que envia um e-mail HTML ao usuário quando uma anotação é criada.
+Temos o `form_email que envia um e-mail HTML ao usuário quando uma anotação é criada, o celery faz isso para nós em 2º plano.
 
 Comportamento:
 
 - Durante a criação da nota é disparado um e-mail com o `titulo_nota` para o destinatario que foi cadastrado durante a criação do usuário.
-- Usa `settings.DEFAULT_FROM_EMAIL` como remetente remetente padrão do envio de E-mail.
+- Usa `settings.DEFAULT_FROM_EMAIL` como remetente remetente padrão do envio de E-mail e o Celery faz a gestão dos envios em segundo plano.
 
 ## Executar o projeto
 
@@ -88,7 +90,7 @@ instale dependências:
 install -r requirements.txt
 ```
 
-2. Com o arquivo `.env.local` como exemplo, criei e configure o seu  banco e configurações de e-mail.
+2. Com o arquivo `.env.local` como exemplo, criei e configure o seu banco e configurações de e-mail.
 
 3. Rode migrations e crie um superuser:
 
@@ -98,12 +100,12 @@ py manage.py createsuperuser
 py manage.py runserver
 ```
 
-4. Swagger 
-Exibi de forma amigavel ao usuário o sistema em si
+4. Swagger
+   Exibi de forma amigavel ao usuário o sistema em si
 
- ```bash
- http://127.0.0.1:8000/api/schema/swagger-ui/#/
- ```
+```bash
+http://127.0.0.1:8000/api/schema/swagger-ui/#/
+```
 
 ## Boas práticas & performance
 
@@ -117,13 +119,13 @@ Exibi de forma amigavel ao usuário o sistema em si
 - Existem testes de criação, edição e exclusão de usuários e notas, em cada app tem o seu arquivos de estes.
 
 Para testar usamos:
+
 ```py
 test -s -v
 ```
 
-## Próximos passos 
+## Próximos passos
 
 - Disparo de E-mail com o Celery
 - Configuração do paginação e filtros na exibição das notas.
 - Ajustar e refinar a documentação para melhorar os exemplos.
-
