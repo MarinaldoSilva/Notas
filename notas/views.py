@@ -6,13 +6,14 @@ from rest_framework.views import APIView
 
 from .models import Notas
 from .serializer import NotasSerializer
+from .tasks import form_email
 from .utils import (
     ERROR_404,
     ERROR_CREATE_OR_EMAIL,
     KEY_ERROR,
     RESULT_RESPONSE,
-    form_email,
 )
+
 
 
 class NotasListAPIView(APIView):
@@ -117,8 +118,10 @@ class NotasCreateAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         try:
             notas_instance = serializer.save(dono=request.user)
+
             email_destino = request.user.email
             titulo_nota = notas_instance.titulo
+            
             form_email(email_destino, titulo_nota)
         except Exception as e:
             return Response(

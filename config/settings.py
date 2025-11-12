@@ -19,10 +19,15 @@ INSTALLED_APPS = [
     "users",
     "notas",
     "authentication",
+
+    "django_filters",
+    "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
     "corsheaders",
+
+
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -45,11 +50,19 @@ MIDDLEWARE = [
 ROOT_URLCONF = "config.urls"
 
 REST_FRAMEWORK = {
+
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
+
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend"
+    ],
+
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+
 }
 
 SIMPLE_JWT = {
@@ -113,6 +126,11 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
 
 DEFAULT_FROM_EMAIL = "notas_no_replay@gmail.com"
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
