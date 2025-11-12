@@ -15,6 +15,9 @@ class UserListAPIView(APIView):
 
     def get(self, request):
         serializer = UserSerializer(request.user)
+        """
+        Quando o serializer é chamado em sem passar o data=, é chamado em modo leitura(get), e passamos o primeiro argumento que é instance, ele recebe o request.user que já é um objeto completo com id, username, email e etc... e tras esses dados que serão serializados que são um dict e o Response os converte em JSON
+        """
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

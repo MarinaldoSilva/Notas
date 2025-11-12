@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from rest_framework import serializers
 
 from .models import Notas
@@ -25,13 +23,17 @@ class NotasSerializer(serializers.ModelSerializer):
         return value.title()
 
     def validate(self, data):
+
         titulo = data.get("titulo")
         descricao = data.get("descricao")
 
         if titulo and descricao:
-            if titulo.strip().lower() == descricao.strip().lower():
+            if titulo == descricao:
                 raise serializers.ValidationError(
-                    "O titulo não pode ser igual a descrição da nota."
+                    {"non_field_erros":"O titulo não pode ser igual a descrição da nota."}
                 )
             return data
         return data
+    
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)

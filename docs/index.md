@@ -1,297 +1,129 @@
 # Documentação do Projeto Notas
 
-## Visão Geral do Projeto
+## Visão Geral
 
-O projeto Notas é uma API REST desenvolvida em Django que permite aos usuários criar e gerenciar anotações pessoais de forma segura. O sistema implementa autenticação JWT e oferece funcionalidades robustas de gerenciamento de notas.
+`Notas` é uma API REST feita com Django e Django REST Framework para gerenciamento de anotações pessoais. Com nosso foco em segurança(usamos JWT) e notificações por e-mail quando criamos novas notas.
 
-## Sistema de Notificações por E-mail
+## Conteúdo do Projeto
 
-O sistema inclui um serviço de notificações por e-mail implementado no módulo `utils.py`. Este serviço é responsável por enviar emails automáticos quando novas notas são criadas.
+- Overview por que do projeto.
+- Tecnologias e libs utilizadas
+- Estrutura do projeto 
+- Endpoints
+- Serialização
+- Notificações por e-mail
+- Executar o projeto
+- Próximos passos
 
-### Implementação do Serviço de E-mail (`utils.py`)
+## Tecnologias e libs utilizadas
 
-```python
-def form_email(user_email: str, titulo_nota: str):
-    """
-    Envia um e-mail de confirmação quando uma nova nota é cadastrada no sistema.
-    
-    Parâmetros:
-    - user_email: E-mail do destinatário
-    - titulo_nota: Título da nota criada
-    """
+Algumas das libs utilizdas:
+
+Python
+Django 5.2 
+Django REST Framework
+djangorestframework-simplejwt (JWT)
+drf-spectacular
+dotenv
+psycopg2 
+
+As demais libs estão no arquivo `requirements.txt`.
+
+## Estrutura do projeto
+
+`users` — model de custom user.
+ endpoints para cadastro/atualização.
+* `authentication` — Contém as responsabilidades signup, signin, signout com tokens de acesso.
+- `notas` — model `Notas` que contém os dono, titulo, descricao entre outros, também tem os serializers, views e utils onde temas requisições de E-mail.
+
+## Endpoints principais
+
+Obs.: todas as rotas de `notas` exigem autenticação JWT (exceto as públicas especificadas).
+
+- Autenticação / Usuário
+
+  - POST `/api/v1/auth/signup/` — cria usuário e tokens (access, refresh)
+  - POST `/api/v1/auth/signin/` — autenticação por email e senha com o retorno de tokens
+  - POST `/api/v1/auth/signout/` — invalida o refresh token
+  - GET `/api/v1/user/` — retorna os dados do usuário autenticado
+  - PATCH `/api/v1/user/<pk>/` — atualiza usuário.
+
+- Notas
+  - GET `/api/v1/notas/listar/` — lista todas as notas do user logado
+  - GET `/api/v1/notas/listar/<pk>/` — Retorna um user especifico
+  - POST `/api/v1/notas/criar/` — criação de notas e envio de E-amil
+  - PATCH `/api/v1/notas/editar/<pk>/` — atualização parcial de uma nota
+  - DELETE `/api/v1/notas/deletar/<pk>/` — Apaga uma nota especifica
+
+## Serializer
+
+É responsável por transformar o Json em Python na serialização dos dados e faz o oposto na devolução para a view renderizado em JSON. Recebe todos os campos listados no `fields` para obter o valor na requisição, alguns campos como senha são omitidos no retorno, como por exemplo o `password`.
+
+## Notificações por e-mail
+
+Em nosso `notas/utils.py`
+
+Temos o `form_email que envia um e-mail HTML ao usuário quando uma anotação é criada.
+
+Comportamento:
+
+- Durante a criação da nota é disparado um e-mail com o `titulo_nota` para o destinatario que foi cadastrado durante a criação do usuário.
+- Usa `settings.DEFAULT_FROM_EMAIL` como remetente remetente padrão do envio de E-mail.
+
+## Executar o projeto
+
+1. Crie um virtualenv
+
+```bash
+py -m venv venv
 ```
 
-### Características do Sistema de E-mail
-
-1. **Template Personalizado**
-   - Utiliza template HTML localizado em `templates/email/form_email.html`
-   - Suporta formatação rica e personalização do conteúdo
-   - Dados dinâmicos incluem e-mail do usuário e título da nota
-
-2. **Configuração**
-   - Utiliza configurações do Django settings
-   - Remetente configurável via `settings.DEFAULT_FROM_EMAIL`
-   - Suporte a múltiplos destinatários
-
-3. **Tratamento de Erros**
-   - Sistema robusto de tratamento de exceções
-   - Logs detalhados de sucesso e falha
-   - Mensagens informativas no console
-
-4. **Funcionalidades**
-   - Assunto personalizado com o título da nota
-   - Mensagem em formato HTML
-   - Confirmação de envio no console
-   - Tratamento de falhas silenciosas desativado para melhor debugging
-
-### Exemplo de Uso do Sistema de E-mail
-
-```python
-# Exemplo de chamada da função
-form_email("usuario@exemplo.com", "Minha Nova Nota")
-
-# Saída de sucesso no console
-"Enviado com sucesso!"
-"E-mail de criação de nota enviado para usuario@exemplo.com com título 'Minha Nova Nota'."
+```bash
+\venv\Scripts\Activate
 ```
 
-### Integração com o Django
+instale dependências:
 
-- Utiliza o sistema de templates do Django
-- Aproveita as configurações de e-mail do projeto
-- Integrado com o modelo de notas
-- Chamado automaticamente após a criação de uma nova nota
-
-## Tecnologias Utilizadas
-
-- Django 5.2.7
-- Django REST Framework 3.16.1
-- JWT Authentication (djangorestframework_simplejwt 5.5.1)
-- Swagger/OpenAPI (drf-spectacular 0.28.0)
-- PostgreSQL (psycopg2 2.9.11)
-- Python-dotenv 1.2.1
-- CORS Headers 4.9.0
-
-## Motivação do Projeto
-
-O projeto tem como principal objetivo colocar em prática os conceitos aprendidos durante os cursos realizados e pesquisas online nas documentações e web, implementando boas práticas de desenvolvimento e padrões de segurança.
-
-## Funcionalidades e Implementações
-
-### Users
-As funcionalidades de user foram feitas para que o processo de criação do user fosse feito de forma simples e simplificada. No user temos somente uma rota de acesso livre a todos os usuários (AnonymousUser) 
-```http
-http://127.0.0.1:8000/api/v1/user/cadastro/
+```bash
+install -r requirements.txt
 ```
 
+2. Com o arquivo `.env.local` como exemplo, criei e configure o seu  banco e configurações de e-mail.
+
+3. Rode migrations e crie um superuser:
+
+```bash
+py manage.py migrate
+py manage.py createsuperuser
+py manage.py runserver
+```
+
+4. Swagger 
+Exibi de forma amigavel ao usuário o sistema em si
+
+ ```bash
+ http://127.0.0.1:8000/api/schema/swagger-ui/#/
+ ```
+
+## Boas práticas & performance
+
+- Evitar N+1: usar `select_related('dono')` / `prefetch_related` ao construir querysets para serialização em massa.
+- Tornar o envio de e-mails assíncrono (Celery, Django-Q, BackgroundTasks) para melhorar latência da API.
+- Usar logs estruturados em vez de `print`.
+- Adicionar testes unitários para serializers e views (happy-path + alguns erros).
+
+## Testes
+
+- Existem testes de criação, edição e exclusão de usuários e notas, em cada app tem o seu arquivos de estes.
+
+Para testar usamos:
 ```py
-class UserCreateAPIView(APIView):
-
-    permission_classes = [AllowAny]
-
+test -s -v
 ```
 
-Esse é a única rota de user implementada, os demais acessos seram somente via admin, e nessa rota a permissão é livre.
+## Próximos passos 
 
-### Token JWT
-A utilização do token jwt se dar por motivos de seurança e geração do tokens com prazos de validade curtos, assim é possível trabalhar melhor com logins e logouts.
-Temos tem rotas:
+- Disparo de E-mail com o Celery
+- Configuração do paginação e filtros na exibição das notas.
+- Ajustar e refinar a documentação para melhorar os exemplos.
 
-Obter Token access e refresh
-
-```http
-http://127.0.0.1:8000/api/token/
-```
-```json
-	{
-	"username":"user",
-	"password":"senha"
-}
-```
-E gera uma resposta:
-
-```json
-{
-	"refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-	"access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
-
-Atualização de token(refresh):
-
-```http
-http://127.0.0.1:8000/api/token/refresh
-```
-Passe seu token access gerado
-```json
-"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-```
-
-e receba um novo token nesse mesmo modelo de resposta
-
-Desabilitar um token e evitar que seja reutilizado novamente
-
-```http
-http://127.0.0.1:8000/api/token/blacklist/
-```
-passe seu token
-
-```json
-{
-	"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
-
-e a resposta é
-
-```json
-{
-	"detail": "Token has wrong type",
-	"code": "token_not_valid"
-}
-```
-
-### Notas
-As notas (anotações) dos usuários foram projetadas para serem seguras e com base nisso necessitam de autenticação, é necessário um user com token para acessar as views. No serializer tem três campos de validações, onde tem as validações por `campo` e `validated_data`, eles são:
-
-
-* Para evitar titulos extremamentes curtos tem um limite minimo de palvras.
-
-```python
-def validate_titulo(self, value):
-        min_palavras = 3
-        if len(value.split()) < min_palavras:
-            raise serializers.ValidationError(f"O titulo deve ter pelo menos {min_palavras} palavras")
-        return value.title()
-```
-
-* O titulo não pode ser igual a descrição da atividade.
-
-```python
-def validate(self, data):
-        titulo = data['titulo']
-        descricao = data['descricao']
-
-        if titulo and descricao:
-            if titulo.strip().lower() == descricao.strip().lower():
-                raise serializers.ValidationError("O titulo não pode ser igual a descrição da atividade.")
-            return data
-```
-
-* Toda alteração ai receber uma flag de data da atualização no titulo.
-
-
-```python
-def update(self, instance, validated_data):
-        if 'titulo' in validated_data and instance.titulo != validated_data['titulo']:
-            data_update_title = datetime.now().strftime("%d/%m/%y")
-            validated_data['titulo'] = f"{validated_data['titulo']} - Atualizado em {data_update_title}"
-            return super().update(instance, validated_data)
-        return instance
-```
-
-São funções personalizadas para dar mais robustez no processo de criação das notas.
-
-Temos 4 rotas:
-
-Criação de anotações:
-
-```http
-http://127.0.0.1:8000/api/v1/notas/criar/
-```
-
-```json
-{
-	"titulo":"teste,teste teste",
-	"descricao":"testetesteteste",
-	"status":2
-}
-```
-Criação de listar:
-
-```http
-http://127.0.0.1:8000/api/v1/notas/listar/
-
-```
-```json
-"result": [
-		{
-			"id": 1,
-			"dono": "Armani42",
-			"titulo": "Product Security Supervisor",
-			"descricao": null,
-			"data_criacao": "2025-10-29T19:35:37.468916Z",
-			"status": 1
-		},
-		{
-			"id": 2,
-			"dono": "Armani42",
-			"titulo": "Robson De Valerio - Atualizado em 30/10/25",
-			"descricao": "boy de valerio",
-			"data_criacao": "2025-10-29T19:36:31.958403Z",
-			"status": 1
-		}
-```
-
- e listar por PK/ID:
-
- ```http
-http://127.0.0.1:8000/api/v1/notas/listar/<int:pk>
-```
-```json
-{
-			"id": 1,
-			"dono": "Armani42",
-			"titulo": "Product Security Supervisor",
-			"descricao": null,
-			"data_criacao": "2025-10-29T19:35:37.468916Z",
-			"status": 1
-		}
-```
-
-Editar:
-
-```http
-http://127.0.0.1:8000/api/v1/notas/editar/<int:pk>
-```
-
-```json
-{
-	"titulo":"Robson de valerio",
-	"descricao":"boy de valerio",
-	"status": 1
-}
-```
-
-```json
-{
-	"id": 2,
-	"dono": "Armani42",
-	"titulo": "Robson De Valerio - Atualizado em 30/10/25",
-	"descricao": "boy de valerio",
-	"data_criacao": "2025-10-29T19:36:31.958403Z",
-	"status": 1
-}
-```
-
-Excluir:
-
-```http
-http://127.0.0.1:8000/api/v1/notas/deletar/<int:pk>
-```
-```json
-204 No Content
-```
-Esses são exemplos de entrada e saídas de rotas do sistema.
-
-O sistema em si é simples, mas funcional e fiel ao que se propôe, tem camadas de segurança, é robusta no que se propôe e totalmente escalavel.
-
-### Documentação com Swagger
-
-Foram mapeadas as rotas para facilitar a visualização, configurações pendentes de finalização.
-
-```http
-http://127.0.0.1:8000/api/schema/swagger-ui/#/
-```
-
-vai retornar uma lista com todas as rotas do sistema.

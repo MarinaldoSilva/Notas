@@ -45,7 +45,11 @@ class SigninView(APIView):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            return Response({"detail": "Email não localizado."}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {
+                    "detail": "Email não localizado."
+                    },
+                      status=status.HTTP_401_UNAUTHORIZED)
 
         if user.check_password(password):
             refresh_token = TokenObtainPairSerializer.get_token(user)
@@ -74,8 +78,8 @@ class SignoutView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         try:
+            """refresh_token retorna uma string, o RefreshToken(token) converte a string recebido no refresh_token = request.data.get("refresh") em um obj do tipo e com isso temos acesso aos metodos como o blacklist()"""
             token = RefreshToken(refresh_token)
-            user.save()
             token.blacklist()
         except TokenError:
             raise AuthenticationFailed("Erro ao invalidar o token.", code=status.HTTP_400_BAD_REQUEST)
