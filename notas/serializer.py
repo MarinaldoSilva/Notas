@@ -30,10 +30,10 @@ class NotasSerializer(serializers.ModelSerializer):
         if titulo and descricao:
             if titulo == descricao:
                 raise serializers.ValidationError(
-                    {"non_field_erros":"O titulo não pode ser igual a descrição da nota."}
+                    {"non_field_erros": "O titulo não pode ser igual a descrição da nota."}
                 )
             return data
         return data
-    
+
     def update(self, instance, validated_data):
         return super().update(instance, validated_data)

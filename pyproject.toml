@@ -1,5 +1,5 @@
 [tool.black]
-line-length = 105 
+line-length = 400
 target-version = ['py39']
 include = '\.pyi?$'
 exclude = '''
@@ -20,7 +20,7 @@ exclude = '''
 
   [tool.isort]
 profile = "black"
-line_length = 105
+line_length = 400
 known_first_party = ["config", "users", "notas", "authentication"]
 skip_glob = ["**/migrations/*.py"]
 

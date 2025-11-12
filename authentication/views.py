@@ -45,11 +45,7 @@ class SigninView(APIView):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            return Response(
-                {
-                    "detail": "Email não localizado."
-                    },
-                      status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"detail": "Email não localizado."}, status=status.HTTP_401_UNAUTHORIZED)
 
         if user.check_password(password):
             refresh_token = TokenObtainPairSerializer.get_token(user)
@@ -71,7 +67,6 @@ class SignoutView(APIView):
 
     def post(self, request) -> Response:
         refresh_token = request.data.get("refresh")
-        user = request.user
         if not refresh_token:
             return Response(
                 {"error": "Token para atualização não foi enviado."},
