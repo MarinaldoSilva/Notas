@@ -40,22 +40,42 @@ O controle de acesso as notas é feito com tokens únicos gerados para cada usú
 - **Python**
 - **SQLite3**
 
-## Executar
+## Configurar e executar o projeto
 
-### 1. Baixar o repositório de notas
+### Instalar e configurar o Redis
 
-```bash
-git clone https://github.com/marinaldosilva/notas.git
+Com o Docker já instalado vamos baixar a imagem do Redis
+
+```powershell
+docker pull redis:alpine
 ```
 
-### 2. Criar um ambiente virtual (Windows - PowerShell)
+Instalando as libs para usarmos no projeto
+
+```powershell
+pip install celery redis
+```
+
+Fazer o docker rodar e iniciar em 2º plano o Redis
+
+```powershell
+docker run -d --name seu_projeto_com_redis -p 6379:6379 redis
+```
+
+Na pasta base do projeto(config) temos que iniciar o worker
+
+```powershell
+celery -A config worker -l info
+```
+
+### Criar um ambiente virtual (Windows - PowerShell)
 
 ```powershell
 py -m venv venv
 .\\venv\\Scripts\\Activate.ps1
 ```
 
-### 3. Instalar libs do projeto
+### Instalar libs do projeto
 
 Instale o arquivo `requirements.txt` para instalar todas as libs.
 
@@ -63,7 +83,7 @@ Instale o arquivo `requirements.txt` para instalar todas as libs.
 pip install -r requirements.txt
 ```
 
-### 4. Instância do banco de dados
+### Instância do banco de dados
 
 Utilizamos o banco padrão que se chama sqlite3.
 
@@ -72,7 +92,7 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 5. Criar um Superusuário
+### Criar um Superusuário
 
 para acessar o Django admin para gerenciar os usuários e notas, crie um superuser:
 
@@ -80,7 +100,7 @@ para acessar o Django admin para gerenciar os usuários e notas, crie um superus
 python manage.py createsuperuser
 ```
 
-### 6. Executar o projeto
+### Executar o projeto
 
 ```bash
 python manage.py runserver
