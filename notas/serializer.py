@@ -36,4 +36,10 @@ class NotasSerializer(serializers.ModelSerializer):
         return data
 
     def update(self, instance, validated_data):
+        if 'titulo' in validated_data and instance.titulo != validated_data['titulo']:
+            from datetime import datetime
+
+            data_update_title = datetime.now().strftime("%d/%m/%y")
+            novo_titulo = validated_data['titulo'].title()
+            validated_data['titulo'] = f"{novo_titulo} - Atualizado em {data_update_title}"
         return super().update(instance, validated_data)
