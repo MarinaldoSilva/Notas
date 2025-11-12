@@ -15,7 +15,6 @@ from .utils import (
 )
 
 
-
 class NotasListAPIView(APIView):
     """
     Lista de notas já cadastradas de users autenticados.
@@ -121,7 +120,7 @@ class NotasCreateAPIView(APIView):
 
             email_destino = request.user.email
             titulo_nota = notas_instance.titulo
-            
+
             form_email(email_destino, titulo_nota)
         except Exception as e:
             return Response(

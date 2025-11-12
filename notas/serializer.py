@@ -29,17 +29,15 @@ class NotasSerializer(serializers.ModelSerializer):
 
         if titulo and descricao:
             if titulo == descricao:
-                raise serializers.ValidationError(
-                    {"non_field_erros": "O titulo não pode ser igual a descrição da nota."}
-                )
+                raise serializers.ValidationError({"non_field_erros": "O titulo não pode ser igual a descrição da nota."})
             return data
         return data
 
     def update(self, instance, validated_data):
-        if 'titulo' in validated_data and instance.titulo != validated_data['titulo']:
+        if "titulo" in validated_data and instance.titulo != validated_data["titulo"]:
             from datetime import datetime
 
             data_update_title = datetime.now().strftime("%d/%m/%y")
-            novo_titulo = validated_data['titulo'].title()
-            validated_data['titulo'] = f"{novo_titulo} - Atualizado em {data_update_title}"
+            novo_titulo = validated_data["titulo"].title()
+            validated_data["titulo"] = f"{novo_titulo} - Atualizado em {data_update_title}"
         return super().update(instance, validated_data)

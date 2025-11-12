@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
+
 # @shared_task vai transformar a função em uma tarefa para o Celery
 @shared_task
 def form_email(email_destinatario: str, titulo_nota: str):

@@ -28,11 +28,7 @@ class UserUpdateAPIView(APIView):
     def patch(self, request, pk):
         try:
             queryset = User.objects.get(pk=pk)
-            if (
-                request.user.id != queryset.id
-                and not request.user.is_staff
-                and not request.user.is_superuser
-            ):
+            if request.user.id != queryset.id and not request.user.is_staff and not request.user.is_superuser:
                 return Response(
                     {KEY_ERROR: ERROR_PERMISSION_DENIED},
                     status=status.HTTP_403_FORBIDDEN,

@@ -12,9 +12,7 @@ User = get_user_model()
 @pytest.fixture
 @pytest.mark.django_db
 def user_teste():
-    return User.objects.create_user(
-        username="user_teste", password="admin@25", email="teste@exemple.com"
-    )
+    return User.objects.create_user(username="user_teste", password="admin@25", email="teste@exemple.com")
 
 
 """nota que vai servir para testar o processo de update e reader"""
@@ -23,9 +21,7 @@ def user_teste():
 @pytest.fixture
 @pytest.mark.django_db
 def nota_teste(user_teste):
-    return Notas.objects.create(
-        dono=user_teste, titulo="teste nota com dono", descricao="descrição da nota do user", status=1
-    )
+    return Notas.objects.create(dono=user_teste, titulo="teste nota com dono", descricao="descrição da nota do user", status=1)
 
 
 @pytest.mark.django_db
