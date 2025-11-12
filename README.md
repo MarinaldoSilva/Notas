@@ -27,7 +27,7 @@ O controle de acesso as notas é feito com tokens únicos gerados para cada usú
 
 - **Criação de Notas:** Usuários autenticados podem criar novas notas, e a cada criação de nota é disparado um E-mail informando ao usuário.
 - **Listagem de Notas:** Os usuários logados podem ver suas anotações.
-- **Atualização de Notas:** É possível editar um titulo e descrição da nota, e quando isso é feito um selo com a data da atualização é adicionado.
+- **Atualização de Notas:** É possível editar um titulo e descrição da nota, e quando isso é feito ao lado do titulo a data da atualização é adicionado.
 - **Excluir Notas:** Apagar notas existentes.
 - **Requisitos de criação de notas:**
   - Título: mínimo de 3 palavras.
