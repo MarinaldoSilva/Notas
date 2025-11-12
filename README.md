@@ -48,11 +48,11 @@ O controle de acesso as notas é feito com tokens únicos gerados para cada usú
 git clone https://github.com/marinaldosilva/notas.git
 ```
 
-### 2. Criar um ambiente virtual venv
+### 2. Criar um ambiente virtual (Windows - PowerShell)
 
-```bash
-python -m venv venv
-venv/bin/activate
+```powershell
+py -m venv venv
+.\\venv\\Scripts\\Activate.ps1
 ```
 
 ### 3. Instalar libs do projeto
